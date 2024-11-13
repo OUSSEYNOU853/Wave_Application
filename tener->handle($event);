@@ -1,0 +1,11 @@
+[90m= [39m[34;4mApp\Events\UserCreated[39;24m {#5406
+    +[1muser[22m: [34;4mApp\Models\User[39;24m {#5329
+      [34mname[39m: "[32mTest User[39m",
+      [34memail[39m: "[32mtest@example.com[39m",
+      #[33mpassword[39m: "[32m$2y$12$jMwsGp8FEZ0lF7XP8oGVRuqaRlX4nwa0sftDKTkcDvzRK1VER4acm[39m",
+      [34mupdated_at[39m: "[32m2024-11-12 19:51:18[39m",
+      [34mcreated_at[39m: "[32m2024-11-12 19:51:18[39m",
+    },
+    +[1mprofileImage[22m: [36mnull[39m,
+  }
+
