@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Interfaces\FavoriteServiceInterface;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Services\FavoriteService;
+use Illuminate\Support\Facades\Auth;
+use App\Interfaces\FavoriteServiceInterface;
 use Illuminate\Http\JsonResponse;
 
 class FavoriteController extends Controller
@@ -18,8 +19,10 @@ class FavoriteController extends Controller
 
     public function addFavorite(Request $request): JsonResponse
     {
+        $user = Auth::user();
+
         $data = $request->validate([
-            'user_id' => 'required|integer',
+            'user_id' => 'required|integer|same:' . $user->id, // Vérifier que l'ID correspond à l'utilisateur connecté
             'phone' => 'required|string',
             'name' => 'required|string'
         ]);
@@ -30,7 +33,9 @@ class FavoriteController extends Controller
 
     public function removeFavorite(Request $request, int $favoriteId): JsonResponse
     {
-        $userId = $request->input('user_id');
+        $user = Auth::user();
+        $userId = $user->id;
+
         $success = $this->favoriteService->removeFavorite($userId, $favoriteId);
 
         return response()->json(['success' => $success]);

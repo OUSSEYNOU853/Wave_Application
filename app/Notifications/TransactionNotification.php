@@ -11,10 +11,11 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class TransactionNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+
     protected $message;
     protected $channels;
 
-    public function __construct($message, array $channels = ['database', 'sms', 'mail'])
+    public function __construct($message, array $channels = ['database', 'twilio', 'mail'])
     {
         $this->message = $message;
         $this->channels = $channels;
@@ -32,10 +33,10 @@ class TransactionNotification extends Notification implements ShouldQueue
         ];
     }
 
-    public function toSms($notifiable)
+    public function toTwilio($notifiable)
     {
-        $smsService = new SmsService();
-        $smsService->sendSms($notifiable->phone, $this->message);
+        return (new SmsService())
+            ->content($this->message);
     }
 
     public function toMail($notifiable)

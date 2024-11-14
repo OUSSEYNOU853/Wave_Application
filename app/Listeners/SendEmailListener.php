@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Enums\RoleEnum;
 use App\Events\SendEmailEvent;
 use App\Jobs\SendEmailJob;
 use App\Services\PdfService;
@@ -20,18 +21,16 @@ class SendEmailListener implements ShouldQueue
         $this->qrCodeService = $qrCodeService;
     }
 
-    public function handle(SendEmailEvent $event)  // Changé ici pour correspondre au nouvel événement
+    public function handle(SendEmailEvent $event)
     {
-        // Préparer les chemins pour les fichiers
         $qrCodePath = storage_path('app/public/qrcodes/' . $event->user->id . '_qrcode.png');
         $pdfPath = storage_path('app/public/pdfs/' . $event->user->id . '_card.pdf');
 
-        // Créer les dossiers s'ils n'existent pas
         Storage::makeDirectory('public/qrcodes');
         Storage::makeDirectory('public/pdfs');
 
-        // Générer le QR code avec les données de l'utilisateur
         $qrCodeData = json_encode([
+            'id' => $event->user->id,
             'lastname' => $event->user->lastname,
             'firstname' => $event->user->firstname,
             'email' => $event->user->email,
@@ -44,22 +43,31 @@ class SendEmailListener implements ShouldQueue
 
         $this->qrCodeService->generateQrCode($qrCodeData, $qrCodePath);
 
-        // Préparer les données pour le PDF
         $data = [
             'user' => $event->user,
             'profile_image' => $event->user->photo
         ];
 
-        // Générer le PDF avec le QR code
         $this->pdfService->generatePdfWithQrCode($data, $qrCodePath, $pdfPath);
-        
-        // Préparer le message de bienvenue
+
         $message = [
             'title' => 'Bienvenue ' . $event->user->firstname . ' ' . $event->user->lastname . ' !',
-            'body' => "Votre compte a été créé avec succès. Vous trouverez ci-joint votre carte d'identité numérique."
+            'body' => "Votre compte a été créé avec succès."
         ];
 
-        // Dispatcher le job d'envoi d'email
-        SendEmailJob::dispatch($event->user->email, $message, $pdfPath);
+        // Vérifier le rôle de l'utilisateur
+        switch ($event->user->role) {
+            case RoleEnum::CLIENT->value:
+                case RoleEnum::MARCHAND->value:
+                    $message['body'] .= " Veillez cliquez sur ce lien afin  \n";
+                SendEmailJob::dispatch($event->user->email, $message, $pdfPath);
+                break;
+            case RoleEnum::DISTRIBUTEUR->value:
+                $message['body'] .= " Vos identifiants de connexion sont : \n";
+                $message['body'] .= "Mot de passe : " . $event->user->password . "\n";
+                $message['body'] .= "Code secret : " . $event->user->secret_code . "\n";
+                SendEmailJob::dispatch($event->user->email, $message, null);
+                break;
+        }
     }
 }

@@ -26,7 +26,7 @@
             position: relative;
             width: 100%;
             height: 100%;
-            background-image: url('{{ public_path("images/background.jpeg") }}');
+            background-image: url('{{ public_path("images.jpeg") }}');
             background-size: cover;
             background-position: center;
             border-radius: 20px;
@@ -115,8 +115,8 @@
             
             <!-- Informations utilisateur -->
             <div class="user-info">
-                <h2>{{ $data['user']->name }}</h2>
-                <p>ID: {{ $data['user']->id }}</p>
+                <h2>{{ $data['user']->firsname }} {{ $data['user']->lastname }}</h2>
+                <p>ID: {{ $data['user']->phone }}</p>
                 <p>{{ $data['user']->email }}</p>
             </div>
 

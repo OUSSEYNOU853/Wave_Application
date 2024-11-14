@@ -12,6 +12,7 @@
         "laravel/framework": "^11.9",
         "laravel/passport": "^12.3",
         "laravel/tinker": "^2.9",
+        "s-ichikawa/laravel-sendgrid-driver": "^4.0",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "twilio/sdk": "^8.3",
         "vonage/client": "^4.1"

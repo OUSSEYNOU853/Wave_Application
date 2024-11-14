@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notification de Transaction</title>
     <style>
+        /* Style général */
         body {
             margin: 0;
             padding: 0;
@@ -23,6 +24,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
+        /* En-tête */
         .header {
             background: linear-gradient(135deg, #6b46c1 0%, #4a148c 100%);
             color: white;
@@ -39,6 +41,7 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
 
+        /* Contenu */
         .content {
             padding: 40px 30px;
             background-color: white;
@@ -54,6 +57,24 @@
             font-size: 16px;
         }
 
+        /* Bouton d'action */
+        .button {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #6b46c1;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #553c9a;
+        }
+
+        /* Pied de page */
         .footer {
             background-color: #1a1a1a;
             color: #ffffff;
@@ -87,22 +108,6 @@
             text-decoration: none;
             margin: 0 10px;
             font-weight: 500;
-        }
-
-        .button {
-            display: inline-block;
-            padding: 12px 25px;
-            background-color: #6b46c1;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            margin-top: 20px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        .button:hover {
-            background-color: #553c9a;
         }
     </style>
 </head>

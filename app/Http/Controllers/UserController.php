@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth; // Gardons quand même l'import de Auth
+use Illuminate\Support\Facades\Auth;
 use App\Interfaces\UserServiceInterface;
 use App\Notifications\TransactionNotification;
 
@@ -46,7 +46,6 @@ class UserController extends Controller
         }
     }
 
-    // Fonction pour récupérer un utilisateur par son numéro de téléphone
     public function findByPhone(Request $request, $phone): JsonResponse
     {
         $user = Auth::user();

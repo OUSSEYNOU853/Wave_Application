@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Interfaces\ScheduledTransferServiceInterface;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
+use App\Interfaces\ScheduledTransferServiceInterface;
 
 class ScheduledTransferController extends Controller
 {
@@ -17,13 +18,16 @@ class ScheduledTransferController extends Controller
 
     public function scheduleTransfer(Request $request): JsonResponse
     {
+        $user = Auth::user();
+
         $data = $request->validate([
-            'user_id' => 'required|integer',
+            'user_id' => 'required|integer|same:' . $user->id,
             'recipient_phone' => 'required|string',
             'amount' => 'required|numeric|min:0.01',
             'frequency' => 'required|string|in:jour,semaine,mois',
             'next_date' => 'required|date'
         ]);
+
         $transfer = $this->scheduledTransferService->scheduleTransfer($data);
         return response()->json(['transfer' => $transfer, 'status' => 'scheduled']);
     }
@@ -33,6 +37,7 @@ class ScheduledTransferController extends Controller
         $this->scheduledTransferService->processScheduledTransfers();
         return response()->json(['status' => 'transfers processed']);
     }
+
 
     public function cancelTransfer($transferId): JsonResponse
     {
