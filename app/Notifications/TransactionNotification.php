@@ -35,9 +35,9 @@ class TransactionNotification extends Notification implements ShouldQueue
 
     public function toTwilio($notifiable)
     {
-        return (new SmsService())
-            ->content($this->message);
+        return (new SmsService())->sendSms($notifiable->phone_number, $this->message);
     }
+
 
     public function toMail($notifiable)
     {

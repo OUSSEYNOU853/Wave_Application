@@ -33,8 +33,9 @@ class AuthService implements AuthServiceInterface
         if (!Str::startsWith($user->phone, '+221')) {
             $user->phone = '+221' . $user->phone;
         }
+        echo $code;
         event(new AuthEvent($user->phone, $code));
-        return "Code envoyé par SMS vers {$user->phone}. Veuillez le vérifier pour continuer.";
+        return "Code envoyé par SMS vers {$user->phone}. Veuillez le vérifier pour continuer {$code}.";
     }
 
     public function verifySmsCode($phone, $code)

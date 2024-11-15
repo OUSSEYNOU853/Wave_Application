@@ -7,6 +7,7 @@ use Twilio\Rest\Client;
 class SmsService
 {
     protected $client;
+    protected $message;
 
     public function __construct()
     {
@@ -15,14 +16,20 @@ class SmsService
         $this->client = new Client($sid, $token);
     }
 
-    public function sendSms($to, $message)
+    public function content($message)
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    public function sendSms($to)
     {
         try {
             $this->client->messages->create(
                 $to,
                 [
                     'from' => env('TWILIO_PHONE_NUMBER'),
-                    'body' => $message,
+                    'body' => $this->message,
                 ]
             );
         } catch (\Exception $e) {
@@ -30,3 +37,4 @@ class SmsService
         }
     }
 }
+

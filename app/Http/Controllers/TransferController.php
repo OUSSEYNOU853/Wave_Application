@@ -30,7 +30,7 @@ class TransferController extends Controller
         $user = Auth::user();
 
         $data = $request->validate([
-            'sender_id' => 'required|integer|same:' . $user->id,
+            'sender_id' => 'required|integer',
             'recipient_phone' => 'required|string',
             'amount' => 'required|numeric|min:0.01',
         ]);
@@ -50,7 +50,7 @@ class TransferController extends Controller
         $user = Auth::user();
 
         $data = $request->validate([
-            'sender_id' => 'required|integer|same:' . $user->id,
+            'sender_id' => 'required|integer|in:' . $user->id,
             'recipients' => 'required|array',
             'recipients.*.phone' => 'required|string',
             'recipients.*.amount' => 'required|numeric|min:0.01',

@@ -50,4 +50,4 @@ RUN chmod -R 775 /var/www/storage \
 EXPOSE 9000
 
 # Commande pour démarrer l'application
-CMD php artisan serve
+CMD php artisan serve & php artisan queue:work --daemon
